@@ -5,7 +5,7 @@ pipeline {
     }
     agent {
         docker {
-            image 'mmiotkug/node-curl'
+            image 's17947/tbk-java'
             args '-p 3000:3000'
             args '-w /app'
             args '-v /var/run/docker.sock:/var/run/docker.sock'
