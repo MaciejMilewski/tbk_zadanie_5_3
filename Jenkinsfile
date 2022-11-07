@@ -17,12 +17,12 @@ pipeline {
     stages {
         stage("Build"){
             steps {
-                sh 'npm install'
+                sh 'mvn -f pom.xml clean package -DskipTests'
             }
         }
         stage("Test"){
             steps {
-                sh 'npm test'
+                sh 'mvn test'
             }
         }
         stage("Build & Push Docker image") {
