@@ -5,7 +5,7 @@ pipeline {
     }
     agent {
         docker {
-            image 's17947/tbk-java'
+            image '18.0.2.1-jdk-oraclelinux8'
             args '-p 3000:3000'
             args '-w /app'
             args '-v /var/run/docker.sock:/var/run/docker.sock'
