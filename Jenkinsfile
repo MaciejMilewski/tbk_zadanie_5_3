@@ -26,6 +26,14 @@ pipeline {
             }
         }
         stage("Build & Push Docker image") {
+            agent {
+                        docker {
+                            image 'mmiotkug/node-curl'
+                            args '-p 3000:3000'
+                            args '-w /app'
+                            args '-v /var/run/docker.sock:/var/run/docker.sock'
+                        }
+            }
             steps {
                 sh 'docker image build -t $registry:$BUILD_NUMBER .'
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u s17947 --password-stdin'
