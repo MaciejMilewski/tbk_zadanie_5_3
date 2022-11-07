@@ -3,21 +3,23 @@ pipeline {
         registry = "s17947/jenkins-docker-spring-test"
         DOCKERHUB_CREDENTIALS = credentials('docker-login-pwd')
     }
-    agent {
-        docker {
-            image 'maven:3-openjdk-17'
-        }
-    }
+    agent none
     options {
         skipStagesAfterUnstable()
     }
     stages {
         stage("Build"){
+            docker {
+                image 'maven:3-openjdk-17'
+            }
             steps {
                 sh 'mvn -f pom.xml clean package -DskipTests'
             }
         }
         stage("Test"){
+            docker {
+                image 'maven:3-openjdk-17'
+            }
             steps {
                 sh 'mvn test'
             }
