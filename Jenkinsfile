@@ -5,7 +5,7 @@ pipeline {
     }
     agent {
         docker {
-            image 'jenkins/jnlp-agent-maven'
+            image 'maven:3-openjdk-17'
             args '-p 3000:3000'
             args '-w /app'
             args '-v /var/run/docker.sock:/var/run/docker.sock'
