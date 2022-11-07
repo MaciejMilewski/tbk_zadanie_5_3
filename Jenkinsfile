@@ -3,36 +3,26 @@ pipeline {
         registry = "s17947/jenkins-docker-spring-test"
         DOCKERHUB_CREDENTIALS = credentials('docker-login-pwd')
     }
-    agent none
+    agent {
+        docker {
+            image 'maven:3-openjdk-17'
+        }
+    }
     options {
         skipStagesAfterUnstable()
     }
     stages {
         stage("Build"){
-            docker {
-                image 'maven:3-openjdk-17'
-            }
             steps {
                 sh 'mvn -f pom.xml clean package -DskipTests'
             }
         }
         stage("Test"){
-            docker {
-                image 'maven:3-openjdk-17'
-            }
             steps {
                 sh 'mvn test'
             }
         }
         stage("Build & Push Docker image") {
-            agent {
-                        docker {
-                            image 'mmiotkug/node-curl'
-                            args '-p 3000:3000'
-                            args '-w /app'
-                            args '-v /var/run/docker.sock:/var/run/docker.sock'
-                        }
-            }
             steps {
                 sh 'docker image build -t $registry:$BUILD_NUMBER .'
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u s17947 --password-stdin'
